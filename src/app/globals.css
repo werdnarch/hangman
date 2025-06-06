@@ -1,0 +1,51 @@
+@import "tailwindcss";
+:root {
+  --blue: #253aa6;
+}
+.blue {
+  background: var(--blue);
+}
+
+.circle {
+  background: linear-gradient(to bottom, #fb71fe, #4965ff);
+}
+
+.text-outline {
+  color: white;
+  -webkit-text-stroke: 2px black;
+}
+body {
+  height: 100dvh;
+  background: var(--blue);
+  color: var(--foreground);
+  font-family: "Times New Roman", Helvetica, sans-serif;
+}
+
+.main {
+  background-image: url("/images/background-desktop.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Mobile (up to 767px) */
+@media (max-width: 767px) {
+  /* Mobile styles */
+  .main {
+    background-image: url("/images/background-mobile.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+/* Tablet (768px to 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet styles */
+  .main {
+    background-image: url("/images/background-tablet.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
