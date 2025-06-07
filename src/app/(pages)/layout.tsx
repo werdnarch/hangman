@@ -1,5 +1,5 @@
 "use client";
-import GameContextProvider from "@/src/context.tsx/GameContext";
+import GameContextProvider from "@/src/context/GameContext";
 import React, { ReactNode } from "react";
 
 export default function layout({ children }: { children: ReactNode }) {

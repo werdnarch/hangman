@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useGameContext } from "../context.tsx/GameContext";
+import { useGameContext } from "../context/GameContext";
 
 interface CategoryItemProps {
   setIsMounted: (value: boolean) => void;

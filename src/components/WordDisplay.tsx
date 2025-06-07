@@ -5,8 +5,13 @@ import { Alphabet } from "../types";
 interface KeyDisplayProps {
   letter: string;
   guessedLetters: Alphabet[];
+  setGuessCount: React.Dispatch<React.SetStateAction<number>>;
 }
-function KeyDisplay({ letter, guessedLetters }: KeyDisplayProps) {
+function KeyDisplay({
+  letter,
+  guessedLetters,
+  setGuessCount,
+}: KeyDisplayProps) {
   return (
     <div
       className={`bg-[#1E3397] ${
@@ -33,11 +38,13 @@ function KeyDisplay({ letter, guessedLetters }: KeyDisplayProps) {
 interface WordDisplayProps {
   guessedLetters: Alphabet[];
   word: string;
+  setGuessCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function WordDisplay({
   guessedLetters,
   word,
+  setGuessCount,
 }: WordDisplayProps) {
   const [mapped, setMapped] = useState<string[]>([]);
 
@@ -54,6 +61,7 @@ export default function WordDisplay({
     <div className="w-[90%] flex items-center justify-center gap- lg:gap-5 max-w-[1100px]">
       {mapped.map((letter: string, index: number) => (
         <KeyDisplay
+          setGuessCount={setGuessCount}
           guessedLetters={guessedLetters}
           letter={letter}
           key={index}

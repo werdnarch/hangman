@@ -1,19 +1,58 @@
 "use client";
 
+import GameOver from "@/src/components/GameOver";
+import GameWon from "@/src/components/GameWon";
 import KeyPad from "@/src/components/KeyPad";
 import MenuButton from "@/src/components/MenuButton";
 import WordDisplay from "@/src/components/WordDisplay";
-import { useGameContext } from "@/src/context.tsx/GameContext";
+import { useGameContext } from "@/src/context/GameContext";
 import useLocalStorage from "@/src/hooks/useLocalStorage";
 import useRandomWord from "@/src/hooks/useRandomWord";
 import { Alphabet } from "@/src/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function page() {
   const { category, setCategory } = useGameContext();
-  const { word } = useRandomWord();
+  const [guessCount, setGuessCount] = useState<number>(0);
+  const [maxGuesses, setMaxGuesses] = useState<number>(0);
+  const { word, setWord, getRandomWord } = useRandomWord();
+  const [gameStatus, setGameStatus] = useState<"Playing" | "Won" | "Over">(
+    "Playing"
+  );
 
   const [guessedLetters, setGuessedLetters] = useState<Alphabet[]>([]);
+
+  function calculateAllowedGuesses(word: string, buffer = 3) {
+    const uniqueLetters = new Set(word.toLowerCase().replace(/[^a-z]/g, ""));
+    return uniqueLetters.size + buffer;
+  }
+
+  const resetGame = () => {
+    getRandomWord(category ?? "Movies"); // sets new random word
+    setGameStatus("Playing"); // reset status
+    setGuessedLetters([]); // clear guessed letters
+    setGuessCount(0); // reset guess count
+  };
+
+  useEffect(() => {
+    if (!word) return;
+
+    const maxGuesses = calculateAllowedGuesses(word);
+
+    setMaxGuesses(maxGuesses);
+
+    if (guessCount > maxGuesses) {
+      setGameStatus("Over");
+    }
+
+    const isWon = [...new Set(word.toUpperCase())].every((letter) =>
+      guessedLetters.includes(letter as Alphabet)
+    );
+
+    if (isWon) {
+      setGameStatus("Won");
+    }
+  }, [gameStatus, word, guessedLetters, guessCount]);
 
   if (!category) return null;
 
@@ -23,14 +62,27 @@ export default function page() {
         <MenuButton />
         <p className="text-3xl lg:text-6xl lowercase">{category}</p>
       </header>
-
       <section className="h-full flex flex-col gap-40 items-center justify-center w-full">
-        <WordDisplay word={word ?? ""} guessedLetters={guessedLetters} />
+        <WordDisplay
+          setGuessCount={setGuessCount}
+          word={word ?? ""}
+          guessedLetters={guessedLetters}
+        />
         <KeyPad
+          word={word ?? ""}
+          setGuessCount={setGuessCount}
           guessedLetters={guessedLetters}
           setGuessedLetters={setGuessedLetters}
         />
       </section>
+      <p>{word}</p>
+      <p>{guessedLetters}</p>
+      {gameStatus === "Over" && (
+        <GameOver resetGame={resetGame} word={word ?? ""} />
+      )}
+      {gameStatus === "Won" && (
+        <GameWon resetGame={resetGame} word={word ?? ""} />
+      )}
     </main>
   );
 }

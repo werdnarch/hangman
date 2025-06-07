@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGameContext } from "../context.tsx/GameContext";
+import { useGameContext } from "../context/GameContext";
 
 const sports = [
   "Soccer",
@@ -772,6 +772,44 @@ export default function useRandomWord() {
 
   const { category } = useGameContext();
 
+  function getRandomWord(
+    category:
+      | "Movies"
+      | "TV Shows"
+      | "Countries"
+      | "Capital Cities"
+      | "Animals"
+      | "Sports"
+  ) {
+    let randomArray: string[] = [];
+
+    switch (category) {
+      case "Sports":
+        randomArray = sports; // no 'let' here
+        break;
+      case "Animals":
+        randomArray = animals;
+        break;
+      case "Countries":
+        randomArray = countries;
+        break;
+      case "Capital Cities":
+        randomArray = capitals;
+        break;
+      case "Movies":
+        randomArray = movies;
+        break;
+      case "TV Shows":
+        randomArray = tvShows;
+        break;
+      // add other cases
+    }
+
+    const randomIndex = Math.floor(Math.random() * randomArray.length);
+
+    return { randomIndex };
+  }
+
   useEffect(() => {
     if (!category) return;
 
@@ -803,5 +841,5 @@ export default function useRandomWord() {
     setWord(randomArray[randomIndex]);
   }, [category]);
 
-  return { word };
+  return { word, setWord, getRandomWord };
 }
