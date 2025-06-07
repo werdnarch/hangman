@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 export default function page() {
   const { category, setCategory } = useGameContext();
   const [guessCount, setGuessCount] = useState<number>(0);
+  const [isWon, setIsWon] = useState<boolean>(false);
   const [maxGuesses, setMaxGuesses] = useState<number>(0);
   const { word, getRandomWord } = useRandomWord();
   const [gameStatus, setGameStatus] = useState<"Playing" | "Won" | "Over">(
@@ -50,6 +51,7 @@ export default function page() {
     );
 
     if (isWon) {
+      setIsWon(true);
       setGameStatus("Won");
     }
   }, [gameStatus, word, guessedLetters, guessCount]);
@@ -75,6 +77,7 @@ export default function page() {
           setGuessedLetters={setGuessedLetters}
         />
       </section>
+
       {gameStatus === "Over" && (
         <GameOver resetGame={resetGame} word={word ?? ""} />
       )}
