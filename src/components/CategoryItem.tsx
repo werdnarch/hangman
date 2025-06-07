@@ -1,6 +1,9 @@
+import { useRouter } from "next/navigation";
 import React from "react";
+import { useGameContext } from "../context.tsx/GameContext";
 
 interface CategoryItemProps {
+  setIsMounted: (value: boolean) => void;
   isMounted: boolean;
   className?: string;
   category:
@@ -16,9 +19,21 @@ export default function CategoryItem({
   className,
   isMounted,
   category,
+  setIsMounted,
 }: CategoryItemProps) {
+  const router = useRouter();
+  const { setCategory } = useGameContext();
+
+  const handleClick = () => {
+    setCategory(category);
+    setIsMounted(false);
+    setTimeout(() => {
+      router.push("/game");
+    }, 700);
+  };
   return (
     <div
+      onClick={handleClick}
       className={`w-full text-center ${className} ${
         isMounted
           ? "left-1/2 opacity-100 -translate-x-1/2 top-0"

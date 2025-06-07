@@ -9,11 +9,51 @@
 .circle {
   background: linear-gradient(to bottom, #fb71fe, #4965ff);
 }
+.shadow {
+  -webkit-text-stroke: 20px #243041;
+
+  @media screen and (max-width: 650px) {
+    -webkit-text-stroke: 10px #243041;
+  }
+}
+
+.gradient-text {
+  display: grid;
+  grid-template-areas: "stack";
+
+  > * {
+    grid-area: stack;
+  }
+}
+
+.title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 100px;
+  letter-spacing: -7px;
+  width: max-content;
+}
+
+.title2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 70px;
+  letter-spacing: -7px;
+  width: max-content;
+}
 
 .text-outline {
-  color: white;
-  -webkit-text-stroke: 2px black;
+  background: linear-gradient(#67b6ff, white);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
 }
+
 body {
   height: 100dvh;
   background: var(--blue);
