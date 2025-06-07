@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useGameContext } from "../context/GameContext";
 
 const sports = [
@@ -769,55 +769,16 @@ const movies = [
 
 export default function useRandomWord() {
   const [word, setWord] = useState<string>();
-
   const { category } = useGameContext();
 
-  function getRandomWord(
-    category:
-      | "Movies"
-      | "TV Shows"
-      | "Countries"
-      | "Capital Cities"
-      | "Animals"
-      | "Sports"
-  ) {
-    let randomArray: string[] = [];
-
-    switch (category) {
-      case "Sports":
-        randomArray = sports; // no 'let' here
-        break;
-      case "Animals":
-        randomArray = animals;
-        break;
-      case "Countries":
-        randomArray = countries;
-        break;
-      case "Capital Cities":
-        randomArray = capitals;
-        break;
-      case "Movies":
-        randomArray = movies;
-        break;
-      case "TV Shows":
-        randomArray = tvShows;
-        break;
-      // add other cases
-    }
-
-    const randomIndex = Math.floor(Math.random() * randomArray.length);
-
-    return { randomIndex };
-  }
-
-  useEffect(() => {
+  const getRandomWord = useCallback(() => {
     if (!category) return;
 
     let randomArray: string[] = [];
 
     switch (category) {
       case "Sports":
-        randomArray = sports; // no 'let' here
+        randomArray = sports;
         break;
       case "Animals":
         randomArray = animals;
@@ -834,12 +795,15 @@ export default function useRandomWord() {
       case "TV Shows":
         randomArray = tvShows;
         break;
-      // add other cases
     }
 
     const randomIndex = Math.floor(Math.random() * randomArray.length);
     setWord(randomArray[randomIndex]);
   }, [category]);
 
-  return { word, setWord, getRandomWord };
+  useEffect(() => {
+    getRandomWord();
+  }, [getRandomWord]);
+
+  return { word, getRandomWord };
 }

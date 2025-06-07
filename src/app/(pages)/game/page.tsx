@@ -15,7 +15,7 @@ export default function page() {
   const { category, setCategory } = useGameContext();
   const [guessCount, setGuessCount] = useState<number>(0);
   const [maxGuesses, setMaxGuesses] = useState<number>(0);
-  const { word, setWord, getRandomWord } = useRandomWord();
+  const { word, getRandomWord } = useRandomWord();
   const [gameStatus, setGameStatus] = useState<"Playing" | "Won" | "Over">(
     "Playing"
   );
@@ -28,7 +28,7 @@ export default function page() {
   }
 
   const resetGame = () => {
-    getRandomWord(category ?? "Movies"); // sets new random word
+    getRandomWord(); // sets new random word
     setGameStatus("Playing"); // reset status
     setGuessedLetters([]); // clear guessed letters
     setGuessCount(0); // reset guess count
@@ -75,8 +75,6 @@ export default function page() {
           setGuessedLetters={setGuessedLetters}
         />
       </section>
-      <p>{word}</p>
-      <p>{guessedLetters}</p>
       {gameStatus === "Over" && (
         <GameOver resetGame={resetGame} word={word ?? ""} />
       )}
